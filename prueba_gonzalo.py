@@ -1,71 +1,83 @@
-usuarios = {}
+
+   usuarios = {}
 
 
 def mostrar_menu():
-    print("\nMENU PRINCIPAL:")
+    print("\nMENÚ DE OPCIONES:")
     print("1. Ingresar usuario")
     print("2. Buscar usuario")
     print("3. Eliminar usuario")
     print("4. Salir")
 
 
-def ingresar_usuario():
-    print("\nIngrese nombre de  usuario")
-    nombre = input("Nombre de usuario: ")
+def tiene_numero(texto):
+    for caracter in texto:
+        if caracter.isdigit():
+            return True
+    return False
 
+
+def tiene_letra(texto):
+    for caracter in texto:
+        if caracter.isalpha():
+            return True
+    return False
+
+
+def validar_contraseña(contra):
+    if len(contra) < 8:
+        return False
+    if " " in contra:
+        return False
+    if not tiene_numero(contra):
+        return False
+    if not tiene_letra(contra):
+        return False
+    return True
+
+
+def ingresar_usuario():
+    nombre = input("Ingrese nombre de usuario: ")
     if nombre in usuarios:
-        print("Usuario ya existe. Intente otro.")
+        print("Usuario ya existe.Intente otro.")
         return
 
-    sexo = input("Sexo (F/M): ").upper()
-    while sexo not in ['F', 'M']:
-        print("Solo se permite F o M solamente")
-        sexo = input("Sexo (F/M): ").upper()
+    sexo = input("Ingrese sexo (F o M): ")
+    if sexo != "F" and sexo != "M":
+        print("Debe ingresar F o M solamente.Intente de nuevo.")
+        return
 
-    while True:
-        contraseña = input("Contraseña: ")
-        if len(contraseña) < 8:
-            print("Mínimo 8 caracteres")
-        elif ' ' in contraseña:
-            print("No puede tener espacios")
-        elif not any(caracter() for
-                     (caracter) in contraseña):
-            print("Debe tener al menos un número")
-        elif not any(caracter() for (caracter) in contraseña):
-            print("Contraseña no valida. Intente otra.")
-        else:
-            break
+    contra = input("Ingrese contraseña: ")
+    if not validar_contraseña(contra):
+        print("Contraseña no válida.")
+        return
 
-    usuarios[nombre] = {'sexo': sexo, 'contraseña': contraseña}
-    print("¡Usuario ingresado con exito!")
+    usuarios[nombre] = {"sexo": sexo, "contraseña": contra}
+    print("Usuario ingresado con exito.")
 
 
 def buscar_usuario():
-    print("\nBuscar usuario")
-    nombre = input("Nombre a buscar: ")
-
+    nombre = input("Ingrese nombre de usuario a buscar: ")
     if nombre in usuarios:
-        print(f"Sexo: {usuarios[nombre]['sexo']}")
-        print(f"Contraseña: {usuarios[nombre]['contraseña']}")
+        print("Sexo:", usuarios[nombre]["sexo"])
+        print("Contraseña:", usuarios[nombre]["contraseña"])
     else:
-        print("El usuario no se encuentra")
+        print("El usuario no se encuentra.")
 
 
 def eliminar_usuario():
-    print("\nEliminar usuario")
-    nombre = input("Nombre a eliminar: ")
-
+    nombre = input("Ingrese nombre de usuario a eliminar: ")
     if nombre in usuarios:
         del usuarios[nombre]
-        print("¡Usuario eliminado con exito!")
+        print("Usuario eliminado con exito!")
     else:
-        print("No se encontró el usuario")
+        print("No se pudo eliminar usuario!")
 
 
-while True:
+opcion = ""
+while opcion != "4":
     mostrar_menu()
-    opcion = input("Seleccione una opción (1-4): ")
-
+    opcion = input("Seleccione una opción: ")
     if opcion == "1":
         ingresar_usuario()
     elif opcion == "2":
@@ -73,7 +85,6 @@ while True:
     elif opcion == "3":
         eliminar_usuario()
     elif opcion == "4":
-        print("¡Programa terminado!")
-        break
+        print("Programa terminado...")
     else:
-        print("Debe ingresar una opcion valida!.")
+        print("!Debe ingresar una opcion válida!.")
